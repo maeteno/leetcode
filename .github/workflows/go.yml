@@ -2,7 +2,7 @@ name: Go
 
 on:
   push:
-    branches: [ "master", "develop", "feature/golang" ]
+    branches: [ "feature/golang" ]
   pull_request:
     branches: [ "master" ]
 
@@ -19,7 +19,11 @@ jobs:
         go-version: 1.18
 
     - name: Build
-      run:  cd golang && go build -v ./...
+      run: |
+        cd golang
+        go build -v ./...
 
     - name: Test
-      run: cd golang && go test -v ./...
+      run: |
+        cd golang
+        go test -v ./...
