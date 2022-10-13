@@ -4,5 +4,6 @@ members = [
     "sort",
     "utils",
     "leetcode",
+    "algorithm",
     "study"
 ]
