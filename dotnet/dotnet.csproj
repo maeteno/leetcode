@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-      <Folder Include="Leetcode\" />
-      <Folder Include="Study\" />
+      <Folder Include="src\Leetcode\" />
+      <Folder Include="src\Study\" />
   </ItemGroup>
 
   <ItemGroup>
