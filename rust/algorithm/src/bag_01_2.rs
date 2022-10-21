@@ -7,10 +7,7 @@ pub struct Goods {
 
 impl Goods {
     pub fn new(weight: i32, value: i32) -> Goods {
-        Goods {
-            weight,
-            value,
-        }
+        Goods { weight, value }
     }
 }
 
@@ -53,7 +50,7 @@ impl ValuableKnapsack {
 
         match dp.iter().max() {
             Some(v) => *v,
-            None => 0
+            None => 0,
         }
     }
 }
@@ -61,7 +58,6 @@ impl ValuableKnapsack {
 #[cfg(test)]
 mod tests {
     use crate::bag_01_2::{Goods, ValuableKnapsack};
-
     #[test]
     pub fn test_dp_select() {
         let goods = vec![
@@ -71,10 +67,7 @@ mod tests {
             Goods::new(3, 70),
         ];
 
-        let knapsack = ValuableKnapsack {
-            goods,
-            cap: 9,
-        };
+        let knapsack = ValuableKnapsack { goods, cap: 9 };
 
         let value = knapsack.select();
 
