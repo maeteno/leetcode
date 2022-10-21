@@ -1,7 +1,5 @@
 # Leetcode Rust Code
 
-
-
 ---
 ### JS Runtime
 - https://wasmedge.org/book/en/start/install.html

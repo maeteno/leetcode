@@ -9,6 +9,7 @@ pub mod no_08_medium;
 pub mod no_09_easy;
 pub mod no_11_medium;
 pub mod no_14_easy;
+pub mod no_15_medium;
 pub mod no_26_easy;
 pub mod no_27_easy;
 pub mod no_70_easy;
