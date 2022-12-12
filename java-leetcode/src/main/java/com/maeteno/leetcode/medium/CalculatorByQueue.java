@@ -23,29 +23,15 @@ public class CalculatorByQueue {
 
         String cache = "";
         for (char c : chars) {
-            switch (c) {
-                case ' ':
-                    break;
-                case '+':
-                    cache = push(deque, cache, "+");
-                    break;
-                case '-':
-                    cache = push(deque, cache, "-");
-                    break;
-                case '*':
-                    cache = push(deque, cache, "*");
-                    break;
-                case '/':
-                    cache = push(deque, cache, "/");
-                    break;
-                default:
-                    cache = String.format("%s%c", cache, c);
-            }
+            cache = switch (c) {
+                case ' ' -> cache;
+                case '+', '-', '*', '/' -> push(deque, cache, String.valueOf(c));
+                default -> String.format("%s%c", cache, c);
+            };
         }
         deque.addLast(cache);
 
         Deque<String> deque2 = new ArrayDeque<>();
-
         cache = "";
         while (!deque.isEmpty()) {
             String tmp = deque.poll();
