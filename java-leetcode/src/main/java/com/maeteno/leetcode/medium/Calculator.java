@@ -2,10 +2,12 @@ package com.maeteno.leetcode.medium;
 
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Objects;
-import java.util.concurrent.LinkedBlockingDeque;
 
 /**
+ * <a href="https://leetcode.cn/problems/calculator-lcci/">面试题 16.26. 计算器</a>
  * 给定一个包含正整数、加(+)、减(-)、乘(*)、除(/)的算数表达式(括号除外)，计算其结果。
  * <p>
  * 表达式仅包含非负整数，+， - ，*，/ 四种运算符和空格  。 整数除法仅保留整数部分。
@@ -13,14 +15,12 @@ import java.util.concurrent.LinkedBlockingDeque;
  * @author SL.F
  */
 @Slf4j
-public class CalculatorLcci {
-
-    private char[] operator1 = {'+', '-'};
-    private char[] operator2 = {'*', '/'};
+public class Calculator {
 
     public int calculate(String str) {
         char[] chars = str.toCharArray();
-        LinkedBlockingDeque<String> deque = new LinkedBlockingDeque<>();
+        Deque<String> deque = new ArrayDeque<>();
+
         String cache = "";
         for (char c : chars) {
             switch (c) {
@@ -42,33 +42,34 @@ public class CalculatorLcci {
                     cache = String.format("%s%c", cache, c);
             }
         }
-        deque.push(cache);
+        deque.addLast(cache);
 
-        LinkedBlockingDeque<String> deque2 = new LinkedBlockingDeque<>();
+        Deque<String> deque2 = new ArrayDeque<>();
 
         cache = "";
         while (!deque.isEmpty()) {
             String tmp = deque.poll();
-            switch (tmp) {
-                case "+":
-                case "-":
-                    deque2.push(cache);
-                    deque2.push(tmp);
-                    break;
-                case "*":
-                    int i1 = Integer.parseInt(Objects.requireNonNull(deque.poll())) * Integer.parseInt(cache);
+            cache = switch (tmp) {
+                case "+", "-" -> {
+                    deque2.addLast(cache);
+                    deque2.addLast(tmp);
+                    yield "";
+                }
+                case "*" -> {
+                    int i1 = Integer.parseInt(cache) * Integer.parseInt(Objects.requireNonNull(deque.poll()));
                     deque.push(String.valueOf(i1));
-                    break;
-                case "/":
-                    int i2 = Integer.parseInt(Objects.requireNonNull(deque.poll())) / Integer.parseInt(cache);
+                    yield "";
+                }
+                case "/" -> {
+                    int i2 = Integer.parseInt(cache) / Integer.parseInt(Objects.requireNonNull(deque.poll()));
                     deque.push(String.valueOf(i2));
-                    break;
-                default:
-                    cache = tmp;
-            }
+                    yield "";
+                }
+                default -> tmp;
+            };
         }
 
-        deque2.push(cache);
+        deque2.addLast(cache);
 
         int reuslt = 0;
         while (!deque2.isEmpty()) {
@@ -83,9 +84,9 @@ public class CalculatorLcci {
         return reuslt;
     }
 
-    private static String push(LinkedBlockingDeque<String> deque, String item, String operator) {
-        deque.push(item);
-        deque.push(operator);
+    private static String push(Deque<String> deque, String item, String operator) {
+        deque.addLast(item);
+        deque.addLast(operator);
         return "";
     }
 }
