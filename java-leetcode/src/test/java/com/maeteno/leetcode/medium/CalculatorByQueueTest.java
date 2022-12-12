@@ -5,8 +5,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 @Slf4j
-public class CalculatorTest {
-    private final Calculator calc = new Calculator();
+public class CalculatorByQueueTest {
+    private final CalculatorByQueue calc = new CalculatorByQueue();
 
     @Test
     public void test_demo_1() {

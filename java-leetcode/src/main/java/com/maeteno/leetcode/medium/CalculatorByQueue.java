@@ -15,7 +15,7 @@ import java.util.Objects;
  * @author SL.F
  */
 @Slf4j
-public class Calculator {
+public class CalculatorByQueue {
 
     public int calculate(String str) {
         char[] chars = str.toCharArray();
