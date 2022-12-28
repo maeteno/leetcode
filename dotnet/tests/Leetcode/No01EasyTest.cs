@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Logging;
 
 namespace dotnet.Leetcode;
 
@@ -6,9 +7,10 @@ namespace dotnet.Leetcode;
 public class No01EasyTest
 {
     [TestMethod]
-    public void TestDemo()
+    public void test_no_01()
     {
         var no01Easy = new No01Easy();
-        no01Easy.Demo();
+        var twoSum = no01Easy.TwoSum(new[] { 1, 2, 6, 7 }, 3);
+        Logger.LogMessage($"{twoSum[0]},{twoSum[1]}");
     }
 }
