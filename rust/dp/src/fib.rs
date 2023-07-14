@@ -37,9 +37,9 @@ pub fn fib_mem(num: i32) -> i32 {
 }
 
 // 动态规划版本,递推
-pub fn fib_dp(num: i64) -> i64 {
+pub fn fib_dp(num: i128) -> i128 {
     let count = num as usize + 1;
-    let mut mem: Vec<i64> = vec![-1; count];
+    let mut mem: Vec<i128> = vec![-1; count];
     mem[0] = 0;
     mem[1] = 1;
     mem[2] = 1;
@@ -51,10 +51,25 @@ pub fn fib_dp(num: i64) -> i64 {
     mem[count - 1]
 }
 
+pub fn fib_dp_2(num: i128) -> i128 {
+    let mut a: i128 = 0;
+    let mut b: i128 = 1;
+
+    let mut index = 2;
+    while index <= num {
+        let tmp = b;
+        b = b + a;
+        a = tmp;
+        index += 1;
+    }
+
+    b
+}
+
 
 #[cfg(test)]
 mod tests {
-    use crate::fib::{fib, fib_dp, fib_mem};
+    use crate::fib::{fib, fib_dp, fib_dp_2, fib_mem};
 
     #[test]
     fn test_fib() {
@@ -71,6 +86,24 @@ mod tests {
 
         let start = std::time::Instant::now();
         println!("{}", fib_dp(40));
+        let end = std::time::Instant::now();
+        println!("{}us", (end - start).as_micros());
+
+        let start = std::time::Instant::now();
+        println!("{}", fib_dp_2(40));
+        let end = std::time::Instant::now();
+        println!("{}us", (end - start).as_micros());
+    }
+
+    #[test]
+    fn test_fib_2() {
+        let start = std::time::Instant::now();
+        println!("{}", fib_dp(120));
+        let end = std::time::Instant::now();
+        println!("{}us", (end - start).as_micros());
+
+        let start = std::time::Instant::now();
+        println!("{}", fib_dp_2(120));
         let end = std::time::Instant::now();
         println!("{}us", (end - start).as_micros());
     }
