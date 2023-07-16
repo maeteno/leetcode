@@ -7,18 +7,14 @@ pub fn min_path_sum(grid: Vec<Vec<i32>>) -> i32 {
 
     fn calc(grid: &Vec<Vec<i32>>, row: usize, col: usize) -> i32 {
         if row == 0 && col == 0 {
-            return grid[0][0];
+            grid[0][0]
+        } else if col == 0 {
+            grid[col][row] + calc(grid, row - 1, col)
+        } else if row == 0 {
+            grid[col][row] + calc(grid, row, col - 1)
+        } else {
+            grid[col][row] + mini(calc(grid, row - 1, col), calc(grid, row, col - 1))
         }
-
-        if col == 0 {
-            return grid[col][row] + calc(grid, row - 1, col);
-        }
-
-        if row == 0 {
-            return grid[col][row] + calc(grid, row, col - 1);
-        }
-
-        return grid[col][row] + mini(calc(grid, row - 1, col), calc(grid, row, col - 1));
     }
 
     let row = grid[0].len();
