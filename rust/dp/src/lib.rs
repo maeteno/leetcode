@@ -5,3 +5,5 @@ pub mod triangle;
 pub mod min_path_sum;
 pub mod integer_break;
 pub mod num_decode;
+pub mod num_squares;
+pub mod rob_198;

@@ -62,10 +62,6 @@ pub fn min_path_sum_mem(grid: Vec<Vec<i32>>) -> i32 {
 pub fn min_path_sum_dp(grid: Vec<Vec<i32>>) -> i32 {
     // f(row,col) = f(row,col) + min(f(row -1,col),f(row,col -1));
 
-    fn mini(a: i32, b: i32) -> i32 {
-        if a > b { b } else { a }
-    }
-
     let row = grid[0].len();
     let col = grid.len();
 
@@ -80,7 +76,7 @@ pub fn min_path_sum_dp(grid: Vec<Vec<i32>>) -> i32 {
             } else if y == 0 {
                 grid[x][y] + dp[x - 1][y]
             } else {
-                grid[x][y] + mini(dp[x - 1][y], dp[x][y - 1])
+                grid[x][y] + dp[x - 1][y].min(dp[x][y - 1])
             };
         }
     }
