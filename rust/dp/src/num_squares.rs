@@ -89,6 +89,79 @@ pub fn num_squares_mem(n: i32) -> i32 {
     calc(&mut list, n, &mut mem)
 }
 
+pub fn num_squares_dp(n: i32) -> i32 {
+    let mut list: Vec<i32> = vec![];
+    for x in 1..=n {
+        let i = x * x;
+        if i == n {
+            return 1;
+        }
+
+        if i > n {
+            break;
+        }
+
+        list.push(i);
+    }
+
+    let mut mem: Vec<i32> = vec![-1; n as usize + 1];
+    mem[0] = 0;
+    mem[1] = 1;
+    mem[2] = 2;
+
+    if n > 2 {
+        for x in 3..=n {
+            if list.contains(&x) {
+                mem[x as usize] = 1;
+                continue;
+            }
+
+            let mut min = x;
+            for y in 1..x {
+                min = min.min(mem[y as usize] + mem[(x - y) as usize]);
+            }
+
+            mem[x as usize] = min;
+        }
+    }
+
+    mem[n as usize]
+}
+
+pub fn num_squares_dp_2(n: i32) -> i32 {
+    if n == 1 {
+        return 1;
+    }
+
+    let mut mem: Vec<i32> = vec![-1; n as usize + 1];
+    for x in 1..=n {
+        let i = x * x;
+
+        if i > n {
+            break;
+        }
+
+        mem[i as usize] = 1;
+    }
+
+    for x in 2..=n {
+        if mem[x as usize] == 1 {
+            continue;
+        }
+        let mut min = x;
+
+        for y in 1..x {
+            min = min.min(mem[y as usize] + mem[(x - y) as usize]);
+            if min == 2 {
+                continue;
+            }
+        }
+        mem[x as usize] = min;
+    }
+
+    mem[n as usize]
+}
+
 fn get_x(n: i32) -> Result<Vec<i32>, i32> {
     let mut list: Vec<i32> = vec![];
     for x in 1..=n {
@@ -109,7 +182,7 @@ fn get_x(n: i32) -> Result<Vec<i32>, i32> {
 // 测试用例
 #[cfg(test)]
 mod tests {
-    use crate::num_squares::{num_squares, num_squares_mem};
+    use crate::num_squares::{num_squares, num_squares_dp, num_squares_dp_2, num_squares_mem};
 
     #[test]
     fn test_num_squares() {
@@ -126,6 +199,18 @@ mod tests {
     #[test]
     fn test_num_squares_mem() {
         let result = num_squares_mem(12);
+        assert_eq!(result, 3);
+    }
+
+    #[test]
+    fn test_num_squares_dp() {
+        let result = num_squares_dp(12);
+        assert_eq!(result, 3);
+    }
+
+    #[test]
+    fn test_num_squares_dp_2() {
+        let result = num_squares_dp_2(1900);
         assert_eq!(result, 3);
     }
 }
