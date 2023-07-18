@@ -1,10 +1,4 @@
 pub fn min_path_sum(grid: Vec<Vec<i32>>) -> i32 {
-    // f(row,col) = f(row,col) + min(f(row,col),f(row,col));
-
-    fn mini(a: i32, b: i32) -> i32 {
-        if a > b { b } else { a }
-    }
-
     fn calc(grid: &Vec<Vec<i32>>, row: usize, col: usize) -> i32 {
         if row == 0 && col == 0 {
             grid[0][0]
@@ -13,7 +7,7 @@ pub fn min_path_sum(grid: Vec<Vec<i32>>) -> i32 {
         } else if row == 0 {
             grid[col][row] + calc(grid, row, col - 1)
         } else {
-            grid[col][row] + mini(calc(grid, row - 1, col), calc(grid, row, col - 1))
+            grid[col][row] + calc(grid, row - 1, col).min(calc(grid, row, col - 1))
         }
     }
 
@@ -24,12 +18,6 @@ pub fn min_path_sum(grid: Vec<Vec<i32>>) -> i32 {
 }
 
 pub fn min_path_sum_mem(grid: Vec<Vec<i32>>) -> i32 {
-    // f(row,col) = f(row,col) + min(f(row -1,col),f(row,col -1));
-
-    fn mini(a: i32, b: i32) -> i32 {
-        if a > b { b } else { a }
-    }
-
     fn calc(grid: &Vec<Vec<i32>>, row: usize, col: usize, mem: &mut Vec<Vec<i32>>) -> i32 {
         if mem[col][row] != -1 {
             return mem[col][row];
@@ -44,7 +32,7 @@ pub fn min_path_sum_mem(grid: Vec<Vec<i32>>) -> i32 {
         } else if row == 0 {
             grid[col][row] + calc(grid, row, col - 1, mem)
         } else {
-            grid[col][row] + mini(calc(grid, row - 1, col, mem), calc(grid, row, col - 1, mem))
+            grid[col][row] + calc(grid, row - 1, col, mem).min(calc(grid, row, col - 1, mem))
         };
 
         mem[col][row]
@@ -60,8 +48,6 @@ pub fn min_path_sum_mem(grid: Vec<Vec<i32>>) -> i32 {
 
 // 动态规划
 pub fn min_path_sum_dp(grid: Vec<Vec<i32>>) -> i32 {
-    // f(row,col) = f(row,col) + min(f(row -1,col),f(row,col -1));
-
     let row = grid[0].len();
     let col = grid.len();
 
