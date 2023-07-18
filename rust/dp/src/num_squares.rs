@@ -1,24 +1,13 @@
-use std::i32;
-
 /// https://leetcode.cn/problems/perfect-squares/
 /// 279. 完全平方数
 /// 给你一个整数 n ，返回 和为 n 的完全平方数的最少数量 。
 ///
 /// 完全平方数 是一个整数，其值等于另一个整数的平方；换句话说，其值等于一个整数自乘的积。例如，1、4、9 和 16 都是完全平方数，而 3 和 11 不是。
 pub fn num_squares(n: i32) -> i32 {
-    let mut list: Vec<i32> = vec![];
-    for x in 1..=n {
-        let i = x * x;
-        if i == n {
-            return 1;
-        }
-
-        if i > n {
-            break;
-        }
-
-        list.push(i);
-    }
+    let mut list = match get_x(n) {
+        Ok(value) => value,
+        Err(value) => return value,
+    };
 
     fn calc(list: &Vec<i32>, residue: i32, max: i32) -> i32 {
         if residue == 0 {
@@ -57,26 +46,64 @@ pub fn num_squares_mem(n: i32) -> i32 {
         list.push(i);
     }
 
-    fn calc(list: &Vec<i32>, residue: i32, max: i32) -> i32 {
+    fn calc(list: &Vec<i32>, residue: i32, mem: &mut Vec<i32>) -> i32 {
         if residue == 0 {
             return 0;
         }
 
         if residue < 0 {
-            return max;
+            return -1;
         }
 
-        let mut min = max;
+        if mem[residue as usize] == -2 {
+            return -1;
+        }
+
+        if mem[residue as usize] != -1 {
+            return mem[residue as usize];
+        }
+
+        let mut min = -1;
         for item in list {
-            min = calc(list, residue - item, max).min(min);
+            let c_result = calc(list, residue - item, mem);
+            if c_result != -1 {
+                if min == -1 {
+                    min = c_result;
+                } else {
+                    min = c_result.min(min);
+                }
+            }
         }
 
+        if min == -1 {
+            mem[residue as usize] = -2;
+            return -1;
+        }
+
+        mem[residue as usize] = min + 1;
         return min + 1;
     }
 
     println!("{:?}", list);
-    let mut _mem: Vec<i32> = vec![-1; n as usize];
-    calc(&mut list, n, n)
+    let mut mem: Vec<i32> = vec![-1; n as usize + 1];
+    calc(&mut list, n, &mut mem)
+}
+
+fn get_x(n: i32) -> Result<Vec<i32>, i32> {
+    let mut list: Vec<i32> = vec![];
+    for x in 1..=n {
+        let i = x * x;
+        if i == n {
+            return Err(1);
+        }
+
+        if i > n {
+            break;
+        }
+
+        list.push(i);
+    }
+    Ok(list)
 }
 
 // 测试用例
