@@ -21,25 +21,49 @@ pub fn mum_decoding(s: String) -> i32 {
     let chars: Vec<char> = s.chars().collect();
 
     // TODO： 边界检查
-    fn calc(chars: &Vec<char>, n: i32) -> i32 {
+    fn calc(chars: &Vec<char>, n: i32) -> Result<i32, i32> {
         if n <= 0 {
-            return 0;
+            return Ok(0);
         }
 
-        let a = chars[n as usize - 1];
-        if a == '0' {
-            return calc(chars, n - 2) + 1;
-        }
-
+        let one = chars[n as usize - 1];
         let two = (chars[n as usize - 1] as u8 - '0' as u8) * 10 + (chars[n as usize - 1] as u8 - '0' as u8);
-        if a != '0' && two <= 26 {
-            return calc(chars, n - 2) + calc(chars, n - 1) + 1;
+
+        if one == '0' {
+            if two > 26 {
+                return Err(0);
+            }
+
+            return match calc(chars, n - 2) {
+                Ok(value) => Ok(value + 1),
+                Err(err) => Err(err)
+            };
         }
 
-        calc(chars, n - 1) + 1
+        if one != '0' && two <= 26 {
+            let a = match calc(chars, n - 2) {
+                Ok(value) => value,
+                Err(err) => return Err(err)
+            };
+
+            let b = match calc(chars, n - 1) {
+                Ok(value) => value,
+                Err(err) => return Err(err)
+            };
+
+            return Ok(a + b + 1);
+        }
+
+        return match calc(chars, n - 1) {
+            Ok(value) => Ok(value + 1),
+            Err(err) => Err(err)
+        };
     }
 
-    calc(&chars, s.len() as i32)
+    return match calc(&chars, s.len() as i32) {
+        Ok(value) => value,
+        Err(err) => err
+    };
 }
 
 
@@ -55,6 +79,13 @@ mod tests {
     }
 
     #[test]
+    fn test_num_decoding_ai_1() {
+        let str = String::from("22603563215");
+        let count = num_decoding_ai(str);
+        assert_eq!(count, 0)
+    }
+
+    #[test]
     fn test_num_decoding() {
         let str = String::from("226");
         let count = mum_decoding(str);
@@ -63,8 +94,8 @@ mod tests {
 
     #[test]
     fn test_num_decoding_2() {
-        let str = String::from("0226");
+        let str = String::from("22603");
         let count = mum_decoding(str);
-        assert_eq!(count, 3)
+        assert_eq!(count, 0)
     }
 }
