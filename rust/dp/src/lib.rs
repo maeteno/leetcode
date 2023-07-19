@@ -7,3 +7,4 @@ pub mod integer_break;
 pub mod num_decode;
 pub mod num_squares;
 pub mod rob_198;
+pub mod knapsack_simple;
