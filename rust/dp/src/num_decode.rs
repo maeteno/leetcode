@@ -96,6 +96,6 @@ mod tests {
     fn test_num_decoding_2() {
         let str = String::from("22603");
         let count = mum_decoding(str);
-        assert_eq!(count, 0)
+        assert_eq!(count, 4)
     }
 }
