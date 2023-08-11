@@ -27,8 +27,11 @@ def test():
              .astype({'name': 'object', 'continent': 'object', 'area': 'Int64', 'population': 'Int64', 'gdp': 'Int64'}))
 
     result = big_countries(world)
+    result.to_excel('../runtime/big_countries.xlsx', index=False)
+    result.to_csv('../runtime/big_countries.csv', index=False)
 
     print(result)
 
 
-test()
+if __name__ == '__main__':
+    test()
