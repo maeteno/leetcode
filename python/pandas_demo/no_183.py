@@ -12,7 +12,7 @@ def find_customers(customers: pd.DataFrame, orders: pd.DataFrame) -> pd.DataFram
     :return: 购买过的用户
     """
     # 选择 orders['customerId'] 中 'id' 不存在的行。
-    df = customers[~customers['id'].isin(orders['customerId'])]
+    df = customers[~customers['id'].isin(orders[''])]
 
     # 创建一个只包含 name 列的数据框架
     # 并将列 name 重命名为 Customers。
